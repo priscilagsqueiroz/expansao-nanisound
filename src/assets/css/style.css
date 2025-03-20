@@ -1,0 +1,408 @@
+@import "bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  /* Cores */
+  --primary-color: #ce0326;
+  /* Vermelho vibrante (cor de destaque real do PDF) */
+  --secondary-color: #2b2b2b;
+  /* Cinza muito escuro (fundo de seções) */
+  --text-color: #333333;
+  /* Cinza escuro (texto principal) */
+  --white: #ffffff;
+  /* Branco (fundo de cards e fundo geral) */
+  --gray: #f9f9f9;
+  /* Cinza médio (texto secundário) */
+
+  /* Tipografia */
+  --font-family: 'Poppins', sans-serif;
+  /* Fonte principal (exemplo) */
+  --heading-font-weight: 700;
+  /* Peso da fonte para títulos (negrito) */
+  --body-font-size: 1rem;
+  /* Tamanho da fonte para o corpo do texto */
+
+  /* Espaçamento */
+  --padding-small: 0.5rem;
+  /* Espaçamento pequeno */
+  --padding-medium: 1rem;
+  /* Espaçamento médio */
+  --padding-large: 1.5rem;
+  /* Espaçamento grande */
+  --margin-small: 0.5rem;
+  /* Margem pequena */
+  --margin-medium: 1rem;
+  /* Margem média */
+  --margin-large: 1.5rem;
+  /* Margem grande */
+
+  /* Bordas */
+  --border-radius: 0.25rem;
+  /* Raio da borda */
+  --border-width: 1px;
+  /* Largura da borda */
+  --border-color: #dddddd;
+  /* Cor da borda (cinza claro) */
+
+  /* Sombras */
+  --box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
+  /* Sombra suave */
+}
+
+/* Estilos gerais */
+body {
+  font-family: var(--font-family);
+  font-size: var(--body-font-size);
+  color: var(--text-color);
+  background-color: var(--white);
+  /* Fundo cinza muito claro */
+  margin: 0;
+  padding: 0;
+}
+
+/* Títulos */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--heading-font-weight);
+  color: var(--primary-color);
+  /* Vermelho */
+}
+
+.text-red {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+.bg-logos {
+  background-image: url(../img/bg/bg-1.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Cards */
+.card {
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--box-shadow);
+  padding: var(--padding-medium);
+  margin-bottom: var(--margin-medium);
+  background-color: var(--white);
+  /* Fundo branco */
+}
+
+/* Botões */
+.btn-primary {
+  background-color: var(--primary-color);
+  /* Vermelho */
+  border-color: var(--primary-color);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--padding-small) var(--padding-medium);
+}
+
+.btn-primary:hover {
+  filter: brightness(130%);
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  /* Vermelho */
+  border-color: var(--secondary-color);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--padding-small) var(--padding-medium);
+}
+
+.btn-secondary:hover {
+  filter: brightness(130%);
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-outline-secondary {
+  background-color: var(--white);
+  border: 5px solid var(--secondary-color);
+  color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: var(--padding-small) var(--padding-medium);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--primary-color);
+  /* Vermelho */
+  border: 5px solid var(--white);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--padding-small) var(--padding-medium);
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: var(--margin-small);
+  color: var(--white);
+  /* Cinza médio */
+}
+
+/* Container fixo */
+.marquee-container {
+  width: 100%;
+  background-color: #777;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+/* Wrapper flexível para rolagem infinita */
+.marquee-wrapper {
+  display: flex;
+  width: max-content;
+  animation: marquee 10s linear infinite;
+}
+
+/* Texto repetido */
+.marquee-content {
+  display: flex;
+  gap: 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Animação */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-35%);
+  }
+}
+
+#video {
+  background-image: url(../img/bg/bg-ns.png);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+  margin-top: 120px;
+}
+
+#video .carro {
+  bottom: 210px;
+}
+
+#quem-somos {
+  background: linear-gradient(to bottom, transparent, var(--gray));
+  margin-top: -210px;
+}
+
+#quem-somos span {
+  background-color: var(--primary-color);
+}
+
+#quem-somos hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to left, transparent, var(--primary-color) 50%, transparent);
+}
+
+#quem-somos button {
+  bottom: 40px;
+}
+
+#fun-facts {
+  background-image: url(../img/bg/bg-ns-red.png);
+  background-color: var(--primary-color);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  padding: 120px 0 0;
+}
+
+.numero {
+  font-size: clamp(2.5rem, 6vw, 7.5rem);
+  font-weight: 900;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.prefixo {
+  font-size: clamp(2rem, 5vw, 5.625rem);
+  font-weight: bold;
+}
+
+.descricao {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.mi {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+#fun-facts .carro {
+  top: 60px;
+}
+
+#modelo-negocio {
+  background-image: url(../img/bg/bg-modelo.png);
+  background-color: var(--white);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  padding: 210px 0 100px;
+  margin-top: -190px;
+}
+
+#publico {
+  background-image: url(../img/bg/bg-ns-black.png);
+  background-color: var(--white);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  border-top: 5px solid var(--primary-color);
+  padding: 210px 0 0;
+  margin-top: -140px;
+}
+
+#publico .carro {
+  top: 50px;
+}
+
+#publico .icon-container {
+  position: relative;
+  left: 65px;
+}
+
+#publico p,
+#publico h3 {
+  margin-inline-start: 60px;
+}
+
+#prova-social {
+  background-image: url(../img/bg/bg-ns.png);
+  background-color: var(--white);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  padding: 410px 0 100px;
+  margin-top: -440px;
+}
+
+#cta {
+  background-image: url(../img/bg/bg-cta.png);
+  background-color: var(--white);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  padding: 120px 0;
+}
+
+/* Estilo do modal */
+.modal {
+  display: none; /* Garante que ele está escondido ao carregar */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+}
+
+/* Botão de fechar */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Estiliza o botão de fechar (X) */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  z-index: 1001; /* Garante que fica acima do vídeo */
+}
+
+.close:hover {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+.video-thumb{
+  cursor: pointer;
+}
+
+@media screen and (max-width:480px) {
+
+  #home img, #home picture{
+    width: 100%;
+  }
+
+  #video {
+    margin-top: 60px;
+  }
+
+  #video .carro {
+    bottom: 70px;
+  }
+
+  #quem-somos {
+    margin-top: -150px;
+  }
+
+  #fun-facts .carro {
+    top: 0px;
+  }
+
+  #modelo-negocio {
+    padding: 70px 0 100px;
+    margin-top: -60px;
+  }
+
+  #publico .icon-container {
+    left: 0 !important;
+  }
+}

@@ -1,0 +1,1 @@
+const purgecss=require("@fullhuman/postcss-purgecss")({content:["./src/**/*.html","./src/**/*.js"],defaultExtractor:s=>s.match(/[\w-/:]+(?<!:)/g)||[]});module.exports={plugins:[require("autoprefixer"),..."production"===process.env.NODE_ENV?[purgecss]:[]]};
