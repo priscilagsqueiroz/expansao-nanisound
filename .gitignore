@@ -1,12 +1,17 @@
-# Ignorar a pasta node_modules
+# Node modules
 node_modules/
 
-# Ignorar a pasta dist (arquivos gerados)
-dist/
-
-# Ignorar arquivos de log
+# Arquivos de cache
 *.log
+*.tmp
+*.bak
+*.swp
+*.pack
 
-# Sistema operacional
+# Diretórios e arquivos de build
+dist/
+build/
+
+# Outros arquivos temporários
 .DS_Store
 Thumbs.db
