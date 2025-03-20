@@ -15,3 +15,6 @@ build/
 # Outros arquivos temporários
 .DS_Store
 Thumbs.db
+
+#exe
+bfg.jar
