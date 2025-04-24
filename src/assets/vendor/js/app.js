@@ -1,141 +1,123 @@
+// imports
 import { Modal, Collapse } from "bootstrap";
+import AOS from 'aos';
+AOS.init();
 
-// Pega o wrapper da marquee
+// 🔁 Marquee
 const marqueeWrapper = document.getElementById('marquee');
-
-// Clona o conteúdo original várias vezes para criar o efeito de loop
 function duplicarMarquee() {
-    const originalContent = marqueeWrapper.children[0]; // Pega o primeiro filho
-    const clone = originalContent.cloneNode(true); // Clona ele
-
-    // Adiciona várias cópias para garantir rolagem contínua
-    while (marqueeWrapper.scrollWidth < window.innerWidth * 2) {
-        marqueeWrapper.appendChild(clone.cloneNode(true));
-    }
+  const originalContent = marqueeWrapper.children[0];
+  const clone = originalContent.cloneNode(true);
+  while (marqueeWrapper.scrollWidth < window.innerWidth * 2) {
+    marqueeWrapper.appendChild(clone.cloneNode(true));
+  }
 }
+duplicarMarquee();
 
-duplicarMarquee(); // Executa a função ao carregar
-
-// Função para animar contagem
-function animarContador(elementId, valorFinal, duracao, decimal = false) {
-    const contador = document.getElementById(elementId);
-    let inicio = 0;
-    const incremento = valorFinal / 100; // Dividimos em 100 etapas
-    const intervalo = duracao / 100;
-
-    const timer = setInterval(() => {
-        inicio += incremento;
-        if (inicio >= valorFinal) {
-            clearInterval(timer);
-            inicio = valorFinal;
-        }
-
-        if (decimal) {
-            contador.textContent = inicio.toFixed(1);
-        } else {
-            contador.textContent = Math.floor(inicio);
-        }
-    }, intervalo);
-}
-
-// Função para iniciar animação quando o elemento estiver visível
-function iniciarAnimacao() {
-    // Pegar os valores finais dos contadores
-    const contador1 = document.getElementById('contador1');
-    const contador2 = document.getElementById('contador2');
-    const contador3 = document.getElementById('contador3');
-
-    const valor1 = parseFloat(contador1.getAttribute('data-valor'));
-    const valor2 = parseFloat(contador2.getAttribute('data-valor'));
-    const valor3 = parseFloat(contador3.getAttribute('data-valor'));
-
-    // Iniciar animações com durações diferentes
-    animarContador('contador1', valor1, 2000);
-    animarContador('contador2', valor2, 2500, true);
-    animarContador('contador3', valor3, 3000);
-}
-
+// 🎬 Modal logic
 document.addEventListener("DOMContentLoaded", function () {
-    // Modal do primeiro vídeo (individual)
-    var modalPrincipal = document.getElementById("videoModalPrincipal");
-    var videoPrincipal = document.getElementById("meuVideoPrincipal");
-    var openModalBtn = document.getElementById("openVideoModal");
-    var closeModalBtnPrincipal = document.getElementById("closePrincipalModal");
+  const modalPrincipal = document.getElementById("videoModalPrincipal");
+  const videoPrincipal = document.getElementById("meuVideoPrincipal");
+  const openModalBtn = document.getElementById("openVideoModal");
+  const closeModalBtnPrincipal = document.getElementById("closePrincipalModal");
 
-    if (modalPrincipal) {
-        modalPrincipal.style.display = "none";
+  const modalSecundario = document.getElementById("videoModalSecundario");
+  const videoSecundario = document.getElementById("meuVideoSecundario");
+  const videoSourceSecundario = document.getElementById("videoSourceSecundario");
+  const closeModalBtnSecundario = document.getElementById("closeSecundarioModal");
 
-        if (openModalBtn) {
-            openModalBtn.addEventListener("click", function () {
-                modalPrincipal.style.display = "flex";
-                videoPrincipal.load();
-                videoPrincipal.play().catch(error => console.error("Erro ao iniciar o vídeo:", error));
-            });
+  const videoPaths = {
+    "video2": "assets/video/1.mp4",
+    "video3": "assets/video/2.mp4",
+    "video4": "assets/video/3.mp4"
+  };
+
+  function fecharModal(modal, video) {
+    modal.style.display = "none";
+    video.pause();
+    video.currentTime = 0;
+    video.removeAttribute("src");
+    video.load();
+  }
+
+  if (modalPrincipal) {
+    modalPrincipal.style.display = "none";
+
+    openModalBtn?.addEventListener("click", function () {
+      modalPrincipal.style.display = "flex";
+      videoPrincipal.load();
+      videoPrincipal.play().catch(err => console.error(err));
+    });
+
+    closeModalBtnPrincipal?.addEventListener("click", () => fecharModal(modalPrincipal, videoPrincipal));
+    modalPrincipal.addEventListener("click", e => {
+      if (e.target === modalPrincipal) fecharModal(modalPrincipal, videoPrincipal);
+    });
+  }
+
+  if (modalSecundario) {
+    modalSecundario.style.display = "none";
+
+    document.querySelectorAll(".video-thumb").forEach(thumb => {
+      thumb.addEventListener("click", function () {
+        const key = this.getAttribute("data-video");
+        if (videoPaths[key]) {
+          videoSourceSecundario.src = videoPaths[key];
+          videoSecundario.load();
+          videoSecundario.play().catch(err => console.error(err));
+          modalSecundario.style.display = "flex";
         }
+      });
+    });
 
-        if (closeModalBtnPrincipal) {
-            closeModalBtnPrincipal.addEventListener("click", function () {
-                fecharModal(modalPrincipal, videoPrincipal);
-            });
-        }
-
-        modalPrincipal.addEventListener("click", function (event) {
-            if (event.target === modalPrincipal) {
-                fecharModal(modalPrincipal, videoPrincipal);
-            }
-        });
-    }
-
-    // Modal dos três vídeos
-    var modalSecundario = document.getElementById("videoModalSecundario");
-    var videoSecundario = document.getElementById("meuVideoSecundario");
-    var videoSourceSecundario = document.getElementById("videoSourceSecundario");
-    var closeModalBtnSecundario = document.getElementById("closeSecundarioModal");
-
-    var videoPaths = {
-        "video2": "assets/video/1.mp4",
-        "video3": "assets/video/2.mp4",
-        "video4": "assets/video/3.mp4"
-    };
-
-    if (modalSecundario) {
-        modalSecundario.style.display = "none";
-
-        document.querySelectorAll(".video-thumb").forEach(thumb => {
-            thumb.addEventListener("click", function () {
-                var videoKey = this.getAttribute("data-video");
-                if (videoPaths[videoKey]) {
-                    videoSourceSecundario.src = videoPaths[videoKey];
-                    videoSecundario.load();
-                    videoSecundario.play().catch(error => console.error("Erro ao iniciar o vídeo:", error));
-                    modalSecundario.style.display = "flex";
-                }
-            });
-        });
-
-        if (closeModalBtnSecundario) {
-            closeModalBtnSecundario.addEventListener("click", function () {
-                fecharModal(modalSecundario, videoSecundario);
-            });
-        }
-
-        modalSecundario.addEventListener("click", function (event) {
-            if (event.target === modalSecundario) {
-                fecharModal(modalSecundario, videoSecundario);
-            }
-        });
-    }
-
-    // 🔹 Função que fecha o modal e para o vídeo corretamente
-    function fecharModal(modal, video) {
-        modal.style.display = "none";
-        video.pause();
-        video.currentTime = 0; //  Agora para o vídeo e reseta
-        video.removeAttribute("src"); // Remove a fonte para garantir que o vídeo pare
-        video.load(); // Recarrega para garantir que o som pare completamente
-    }
+    closeModalBtnSecundario?.addEventListener("click", () => fecharModal(modalSecundario, videoSecundario));
+    modalSecundario.addEventListener("click", e => {
+      if (e.target === modalSecundario) fecharModal(modalSecundario, videoSecundario);
+    });
+  }
 });
 
-
-// Iniciar animação quando a página carregar
-document.addEventListener('DOMContentLoaded', iniciarAnimacao);
+document.addEventListener('DOMContentLoaded', function () {
+    // Função que anima o contador
+    function animarContador(id, target, duracao) {
+      const el = document.getElementById(id);
+      let start = 0;
+      const passo = target / (duracao / 20);
+      const intervalo = setInterval(() => {
+        start += passo;
+        if (start >= target) {
+          el.textContent = formatarNumero(target);
+          clearInterval(intervalo);
+        } else {
+          el.textContent = formatarNumero(start);
+        }
+      }, 20);
+    }
+  
+    // Função que formata o número (com ou sem decimal)
+    function formatarNumero(numero) {
+      return Number(numero).toLocaleString('pt-BR', {
+        minimumFractionDigits: numero % 1 !== 0 ? 1 : 0,
+        maximumFractionDigits: 1,
+      });
+    }
+  
+    // Cria o observer
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.getAttribute('data-target'));
+          const id = el.getAttribute('id');
+          animarContador(id, target, 2000);
+          obs.unobserve(el); // para não reanimar se rolar de novo
+        }
+      });
+    }, {
+      threshold: 0.6
+    });
+  
+    // Observa só depois que tudo estiver carregado
+    document.querySelectorAll('.contador').forEach(el => observer.observe(el));
+  });
+  

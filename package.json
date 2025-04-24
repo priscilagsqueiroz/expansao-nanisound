@@ -59,12 +59,13 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "bootstrap": "^5.3.3",
     "cross-spawn": "^7.0.6",
     "execa": "^9.5.2",
     "got": "^14.4.5",
     "http-cache-semantics": "^4.1.1",
     "sitemap": "^8.0.0",
-    "sweetalert2": "^11.17.2"
+    "sweetalert2": "^11.19.1"
   }
 }
