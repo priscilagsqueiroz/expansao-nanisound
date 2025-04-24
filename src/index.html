@@ -22,40 +22,55 @@
                     </picture>
                 </div>
                 <div class="col-md-5 p-0 text-white">
-                    <form id="formFranquia" class="p-5" data-aos="zoom-in">
+                    <form id="formFranquia" class="p-5" data-aos="zoom-in" action="https://grupokalaes.solutto.com.br/investidores_form.aspx" method="POST">
+                        <h3 class="text-white">SEJA UM FRANQUEADO DE SUCESSO!</h3>
+                        <p class="text-white">Preencha o formulário abaixo e converse com nosso especialista no mercado
+                            automotivo</p>
                         <div class="form-group mb-2">
                             <label for="name" class="form-label">Nome Completo</label>
-                            <input type="text" id="name" name="name" class="form-control form-control-sm" required>
+                            <input type="text" id="name" name="Nome" class="form-control form-control-sm" required>
                         </div>
 
                         <div class="form-group mb-2">
                             <label for="whatsapp" class="form-label">WhatsApp</label>
-                            <input type="tel" id="whatsapp" name="whatsapp" class="form-control form-control-sm"
+                            <input type="tel" id="whatsapp" name="Telefone" class="form-control form-control-sm"
                                 required>
                         </div>
 
                         <div class="form-group mb-2">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="email" id="email" name="email" class="form-control form-control-sm" required>
+                            <input type="email" id="email" name="Email" class="form-control form-control-sm" required>
                         </div>
 
                         <div class="form-group mb-2">
-                            <label for="cidade" class="form-label">Cidade</label>
-                            <input type="text" id="cidade" name="cidade" class="form-control form-control-sm" required>
+                            <label for="cep" class="form-label">CEP</label>
+                            <input type="text" id="cep" name="cep" class="form-control form-control-sm" required>
                         </div>
 
-                        <div class="form-group mb-2">
+                        <div class="form-group mb-2 row">
                             <label class="form-label">Quanto você pretende investir?</label>
-                            <div class="radio-group">
+                            <div class="radio-group col-md-6">
                                 <div class="radio-option">
-                                    <input type="radio" id="invest1" name="investment" class="form-check-input"
-                                        value="150000">
-                                    <label for="invest1" class="form-check-label">Acima de R$ 150.000,00</label>
+                                    <input type="radio" id="invest1" name="Faixas_Capital" class="form-check-input"
+                                        value="191">
+                                    <label for="invest1" class="form-check-label">De 100 mil a 199 mil</label>
                                 </div>
                                 <div class="radio-option">
-                                    <input type="radio" id="invest2" name="investment" class="form-check-input"
-                                        value="210000">
-                                    <label for="invest2" class="form-check-label">Acima de R$ 210.000,00</label>
+                                    <input type="radio" id="invest2" name="Faixas_Capital" class="form-check-input"
+                                        value="192">
+                                    <label for="invest2" class="form-check-label">De 200 mil a 299 mil</label>
+                                </div>
+                            </div>
+                            <div class="radio-group col-md-6">
+                                <div class="radio-option">
+                                    <input type="radio" id="invest1" name="Faixas_Capital" class="form-check-input"
+                                        value="193">
+                                    <label for="invest1" class="form-check-label">De 300 mil a 399 mil</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="invest2" name="Faixas_Capital" class="form-check-input"
+                                        value="194">
+                                    <label for="invest2" class="form-check-label">Acima de 400 mil</label>
                                 </div>
                             </div>
                         </div>
@@ -79,6 +94,35 @@
                             <textarea id="goal" name="goal" class="form-control form-control-sm" rows="4"
                                 required></textarea>
                         </div>
+
+                        <input id="Pais" name="Pais" type="hidden" value="BR">
+                        <input id="Estado" name="Estado" type="hidden">
+                        <input id="Cidade" class="Cidade" name="Cidade" type="hidden" />
+                        <input id="ddlCidade" name="ddlCidade" type="hidden">
+                        <input id="cidade_interesse_1" name="cidade_interesse_1" class="cidade_interesse_1" type="hidden" />
+                        <input id="Categoria" name="Categoria" type="hidden" value="603" />
+                        <input id="Marca" name="Marca" type="hidden" value="211130175855427" />
+                        <input id="Origem" name="Origem" type="hidden" value="6091" />
+                        <input id="Usuario_Responsavel" name="Usuario_Responsavel" type="hidden" value="31237396" />
+                        <input id="api_key" name="api_key" type="hidden" value="A54B34ED-0037-4BBD-8B38-C6CEEAD3CCAE" />
+                        <input id="email_destinatario" name="email_destinatario" type="hidden" value="" />
+                        <input id="RedirectSucesso" name="RedirectSucesso" type="hidden"
+                            value="https://www.melhorfranquiaautomotiva.com.br/final" />
+                        <input id="RedirectErro" name="RedirectErro" type="hidden"
+                            value="https://grupokalaes.solutto.com.br/forms/formulario_erro.htm" />
+                        <input id="historico_canal_id" name="historico_canal_id" type="hidden" value="2867" />
+                        <input id="historico_categoria_id" name="historico_categoria_id" type="hidden" value="11506" />
+                        <input id="historico_atendente_id" name="historico_atendente_id" type="hidden"
+                            value="31237396" />
+                        <input id="historico_descricao" name="historico_descricao" type="hidden"
+                            value="Candidato importado do https://www.melhorfranquiaautomotiva.com.br/" />
+                        <input id="utm_source" name="utm_source" type="hidden" value="" />
+                        <input id="utm_medium" name="utm_medium" type="hidden" value="" />
+                        <input id="utm_campaign" name="utm_campaign" type="hidden" value="" />
+                        <input id="utm_id" name="utm_id" type="hidden" value="" />
+                        <input id="utm_media" name="utm_media" type="hidden" value="" />
+                        <input id="utm_term" name="utm_term" type="hidden" value="" />
+                        <input id="utm_content" name="utm_content" type="hidden" value="" />
 
                         <button type="submit" class="btn btn-secondary mb-0" id="btn-form">FALE COM NOSSA
                             CONSULTORIA</button>
@@ -312,7 +356,8 @@
                     <img src="assets/img/bg/bg-modelo-1.png" class="img-fluid" alt="">
                 </div>
                 <div class="col-md-4 d-flex flex-column align-items-center" data-aos="zoom-in">
-                    <p class="fs-5 mx-5">Instale a Nani Sound dentro de um espaço que você já possui, como lojas de veículos,
+                    <p class="fs-5 mx-5">Instale a Nani Sound dentro de um espaço que você já possui, como lojas de
+                        veículos,
                         oficinas, centros automotivos, estacionamento ou posto de gasolina. Ideal para quem deseja
                         empreender com baixo investimento inicial, aproveitando a estrutura já existente.</p>
                     <p class="fs-5"><strong>Vantagens:</strong></p>
@@ -337,7 +382,8 @@
                     </picture>
                 </div>
                 <div class="col-md-4 d-flex flex-column align-items-center" data-aos="zoom-in">
-                    <p class="fs-5 mx-5">Loja em ponto comercial próprio, em avenidas ou regiões estratégicas. Permite oferecer uma experiência mais completa, com ambientes personalizados e serviços premium.</p>
+                    <p class="fs-5 mx-5">Loja em ponto comercial próprio, em avenidas ou regiões estratégicas. Permite
+                        oferecer uma experiência mais completa, com ambientes personalizados e serviços premium.</p>
                     <p class="fs-5"><strong>Vantagens:</strong></p>
                     <ul class="fs-5 mb-0">
                         <li>Total autonomia na operação.</li>
@@ -353,8 +399,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary fs-3 rounded-5 px-5 fw-bold"
-                        id="btn-modelos">CONHEÇA
+                    <button type="submit" class="btn btn-primary fs-3 rounded-5 px-5 fw-bold" id="btn-modelos">CONHEÇA
                         OS MODELOS</button>
                 </div>
             </div>
@@ -583,7 +628,8 @@
     <footer class="bg-secondary pt-5">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6 text-center bg-primary py-5 rounded-top-4 d-flex align-items-center justify-content-center" data-aos="fade-right">
+                <div class="col-md-6 text-center bg-primary py-5 rounded-top-4 d-flex align-items-center justify-content-center"
+                    data-aos="fade-right">
                     <div class="me-4">
                         <picture>
                             <source srcset="assets/img/icons/youtube.png" type="image/webp">
