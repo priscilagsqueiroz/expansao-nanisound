@@ -19,12 +19,13 @@ function init() {
     configurarContadores();
     configurarCamposFormulario();
     preencherCamposUrl();
+    configurarScrollParaHome();
 }
 
 // 🎬 Modal logic
 function configurarModais() {
     const modalPrincipal = document.getElementById("videoModalPrincipal");
-    const videoPrincipal = document.getElementById("meuVideoPrincipal");
+    const videoPrincipalContainer = document.getElementById("meuVideoPrincipal");
     const openModalBtn = document.getElementById("openVideoModal");
     const closeModalBtnPrincipal = document.getElementById("closePrincipalModal");
 
@@ -41,22 +42,33 @@ function configurarModais() {
 
     function fecharModal(modal, video) {
         modal.style.display = "none";
-        video.pause();
-        video.currentTime = 0;
-        video.removeAttribute("src");
-        video.load();
+        if (video.tagName === "VIDEO") {
+            video.pause();
+            video.currentTime = 0;
+            video.removeAttribute("src");
+            video.load();
+        } else {
+            // Se for iframe (modal principal)
+            video.innerHTML = ""; // Remove o iframe para parar o vídeo
+        }
     }
 
     if (modalPrincipal && openModalBtn) {
         openModalBtn.addEventListener("click", () => {
             modalPrincipal.style.display = "flex";
-            videoPrincipal.load();
-            videoPrincipal.play().catch(err => console.error(err));
+
+            // Adiciona o iframe quando abrir
+            videoPrincipalContainer.innerHTML = `
+                <iframe width="100%" height="405" src="https://www.youtube-nocookie.com/embed/wtcVTflaLTk?autoplay=1"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>`;
         });
 
-        closeModalBtnPrincipal?.addEventListener("click", () => fecharModal(modalPrincipal, videoPrincipal));
+        closeModalBtnPrincipal?.addEventListener("click", () => fecharModal(modalPrincipal, videoPrincipalContainer));
         modalPrincipal.addEventListener("click", e => {
-            if (e.target === modalPrincipal) fecharModal(modalPrincipal, videoPrincipal);
+            if (e.target === modalPrincipal) fecharModal(modalPrincipal, videoPrincipalContainer);
         });
     }
 
@@ -79,6 +91,7 @@ function configurarModais() {
         });
     }
 }
+
 
 // 🎯 Contadores
 function configurarContadores() {
@@ -124,8 +137,8 @@ function configurarCamposFormulario() {
         if (value.length >= 3) {
             const rest = value.substring(2);
             formatted += rest.length > 8 ? `${rest.substring(0, 5)}-${rest.substring(5, 9)}` :
-                        rest.length > 4 ? `${rest.substring(0, 4)}-${rest.substring(4)}` :
-                        rest;
+                rest.length > 4 ? `${rest.substring(0, 4)}-${rest.substring(4)}` :
+                    rest;
         }
 
         e.target.value = formatted;
@@ -146,7 +159,7 @@ function configurarCamposFormulario() {
 function preencherCamposUrl() {
     const params = new URLSearchParams(window.location.search);
     const fields = [
-        'utm_source', 'utm_medium', 'utm_campaign', 'utm_id', 
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_id',
         'utm_media', 'utm_term', 'utm_content'
     ];
 
@@ -209,4 +222,16 @@ function buscaCidadesPorEstado(uf, callback) {
         }
     };
     xhr.send("siglaUF=" + encodeURIComponent(uf));
+}
+function configurarScrollParaHome() {
+    const scrollToHome = () => {
+        const homeSection = document.getElementById("home");
+        if (homeSection) {
+            homeSection.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    document.getElementById("btn-qs")?.addEventListener("click", scrollToHome);
+    document.getElementById("btn-modelos")?.addEventListener("click", scrollToHome);
+    document.getElementById("btn-cta")?.addEventListener("click", scrollToHome);
 }

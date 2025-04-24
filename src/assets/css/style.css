@@ -326,7 +326,8 @@ h6 {
 
 /* Estilo do modal */
 .modal {
-  display: none; /* Garante que ele está escondido ao carregar */
+  display: none;
+  /* Garante que ele está escondido ao carregar */
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -344,8 +345,8 @@ h6 {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  width: 80%;
-  max-width: 700px;
+  width: 100%;
+  max-width: 770px;
   text-align: center;
 }
 
@@ -371,20 +372,22 @@ h6 {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 5px 10px;
   border-radius: 5px;
-  z-index: 1001; /* Garante que fica acima do vídeo */
+  z-index: 1001;
+  /* Garante que fica acima do vídeo */
 }
 
 .close:hover {
   background-color: rgba(255, 0, 0, 0.7);
 }
 
-.video-thumb{
+.video-thumb {
   cursor: pointer;
 }
 
 @media screen and (max-width:480px) {
 
-  #home img, #home picture{
+  #home img,
+  #home picture {
     width: 100%;
   }
 
@@ -409,7 +412,26 @@ h6 {
     margin-top: -60px;
   }
 
+  #publico {
+    padding: 90px 0 0;
+  }
+
+  #publico .card-content {
+    flex-direction: column;
+  }
+
   #publico .icon-container {
     left: 0 !important;
+    top: 30px;
+  }
+
+  #publico p,
+  #publico h3 {
+    margin-inline-start: 30px;
+  }
+
+  #prova-social {
+    padding: 110px 0;
+    margin-top: -145px;
   }
 }
