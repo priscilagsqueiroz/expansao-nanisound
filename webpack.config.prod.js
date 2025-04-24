@@ -139,7 +139,6 @@ module.exports = merge(common, {
         { from: 'src/assets/css', to: 'assets/css' },
         { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css', to: 'assets/css/bootstrap.min.css' },
         { from: 'node_modules/aos/dist/aos.css', to: 'assets/css/aos.css' },
-        { from: 'node_modules/aos/dist/aos.js', to: 'assets/vendor/js/aos.js' },
         { from: 'src/assets/vendor/js', to: 'assets/vendor/js' },
         { from: 'favicon.ico', to: 'favicon.ico' },
         { from: 'icon.png', to: 'icon.png' },
