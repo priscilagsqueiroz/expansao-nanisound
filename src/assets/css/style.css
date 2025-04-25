@@ -151,11 +151,17 @@ h6 {
   border-radius: var(--border-radius);
   padding: var(--padding-small) var(--padding-medium);
 }
-
+form h3{
+  font-size: 1.5rem;
+}
+form p{
+  font-size: 0.75rem;
+}
 .form-label {
   font-weight: bold;
-  margin-bottom: var(--margin-small);
+  margin-bottom: 0;
   color: var(--white);
+  font-size: 0.75rem;
   /* Cinza médio */
 }
 
@@ -295,6 +301,11 @@ h6 {
   top: 50px;
 }
 
+#publico .card-content{
+  position: relative;
+  left: -65px;
+}
+
 #publico .icon-container {
   position: relative;
   left: 65px;
@@ -418,6 +429,7 @@ h6 {
 
   #publico .card-content {
     flex-direction: column;
+    left: 0;
   }
 
   #publico .icon-container {
