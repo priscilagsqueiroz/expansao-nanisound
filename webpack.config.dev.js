@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require("fs");
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -18,14 +17,20 @@ class GenerateRobotsTxtPlugin {
   }
 }
 
-const pages = ['index', '404'];
-const htmlPlugins = pages.map(page => new HtmlWebpackPlugin({
-  title: 'Franquia de Estética Automotiva - Nani Sound', // Definição do título
-  template: path.resolve(__dirname, `src/${page}.html`), // Caminho absoluto
-  filename: `${page}.html`, // Nome do arquivo final
-  inject: 'body', // Onde os scripts serão injetados
-  scriptLoading: 'defer', // Carregamento assíncrono dos scripts
-  favicon: 'favicon.ico', // Caminho para o favicon
+const pages = [
+  { name: 'index', filename: 'index.html', publicPath: '' },
+  { name: '404', filename: '404.html', publicPath: '' },
+  { name: 'final/index', filename: 'final/index.html', publicPath: '..' },
+];
+
+const htmlPlugins = pages.map(({ name, filename, publicPath }) => new HtmlWebpackPlugin({
+  title: 'Franquia de Estética Automotiva - Nani Sound',
+  template: path.resolve(__dirname, `src/${name}.html`),
+  filename,
+  inject: 'body',
+  scriptLoading: 'defer',
+  favicon: 'favicon.ico',
+  publicPath: publicPath, 
   minify: false,
   meta: {
     'viewport': 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', // Responsividade
@@ -44,32 +49,16 @@ const htmlPlugins = pages.map(page => new HtmlWebpackPlugin({
     'twitter:image': '/assets/img/metatag.png', // Twitter image
   },
 }));
+
 module.exports = merge(common, {
   mode: 'development',
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-    ],
-  },
   devServer: {
     static: path.join(__dirname, 'dist'),
     compress: true,
-    port: 3000, // Porta alterada para 8080
+    port: 3000,
     open: true,
     setupMiddlewares: (middlewares, devServer) => {
-      if (!devServer) {
-        return middlewares;
-      }
+      if (!devServer) return middlewares;
 
       devServer.app.get("/robots.txt", (req, res) => {
         res.set("Content-Type", "text/plain");
@@ -85,7 +74,7 @@ module.exports = merge(common, {
     new CopyPlugin({
       patterns: [
         { from: 'src/assets/img', to: 'assets/img' },
-        { from: 'src/assets/video', to: 'assets/video' },
+        { from: 'src/assets/video', to: 'assets/video' },
         { from: 'src/assets/css', to: 'assets/css' },
         { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css', to: 'assets/css/bootstrap.min.css' },
         { from: 'node_modules/aos/dist/aos.css', to: 'assets/css/aos.css' },

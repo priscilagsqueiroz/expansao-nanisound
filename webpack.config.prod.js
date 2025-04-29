@@ -1,3 +1,4 @@
+const path = require('path');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -7,11 +8,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 const glob = require('glob');
-const path = require('path');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 class GenerateRobotsTxtPlugin {
   apply(compiler) {
@@ -26,15 +26,20 @@ class GenerateRobotsTxtPlugin {
   }
 }
 
-const pages = ['index', '404'];
+const pages = [
+  { name: 'index', filename: 'index.html', publicPath: '' },
+  { name: '404', filename: '404.html', publicPath: '' },
+  { name: 'final/index', filename: 'final/index.html', publicPath: '../' },
+];
 
-const htmlPlugins = pages.map(page => new HtmlWebpackPlugin({
+const htmlPlugins = pages.map(({ name, filename, publicPath }) => new HtmlWebpackPlugin({
   title: 'Franquia de Estética Automotiva - Nani Sound',
-  template: `./src/${page}.html`,
-  filename: `${page}.html`,
+  template: path.resolve(__dirname, `src/${name}.html`),
+  filename,
   inject: 'body',
   scriptLoading: 'defer',
   favicon: 'favicon.ico',
+  publicPath: publicPath, 
   minify: {
     removeAttributeQuotes: false,
     collapseWhitespace: true,
@@ -63,8 +68,9 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: false,
   output: {
-    filename: '[name].[contenthash].js',
+    filename: 'assets/vendor/js/[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',  // Defina aqui o caminho base para os arquivos estáticos
     clean: true,
   },
   optimization: {
@@ -85,14 +91,14 @@ module.exports = merge(common, {
           implementation: ImageMinimizerPlugin.sharpMinify,
           options: {
             encodeOptions: {
-              jpeg: { quality: 80 }, // Reduz qualidade para melhor compressão
-              png: { quality: 80 }, 
-              webp: { quality: 80 }, // Gera WebP com compressão
-              avif: { quality: 80 }, // Gera Avif com compressão
+              jpeg: { quality: 80 },
+              png: { quality: 80 },
+              webp: { quality: 80 },
+              avif: { quality: 80 },
             },
           },
         },
-      }),      
+      }),
     ],
     splitChunks: {
       chunks: 'all',
@@ -101,57 +107,32 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
-      {
-        test: /\.(png|jpg|jpeg|gif)$/i,
-        use: [
-          {
-            loader: 'responsive-loader',
-            options: {
-              adapter: require('responsive-loader/sharp'),
-              sizes: [480, 768, 1080, 1920], // Tamanhos otimizados para diferentes dispositivos
-              placeholder: true,
-              quality: 80, // Reduz o peso mantendo boa qualidade
-              format: 'webp', // Converte automaticamente para WebP
-            },
-          },
-        ],
-        type: 'asset',
-      },      
     ],
   },
   plugins: [
     ...htmlPlugins,
-    new BundleAnalyzerPlugin(),
+    new GenerateRobotsTxtPlugin(),
     new CopyPlugin({
       patterns: [
         { from: 'src/assets/img', to: 'assets/img' },
-        { from: 'src/assets/video', to: 'assets/video' },
+        { from: 'src/assets/video', to: 'assets/video' },
         { from: 'src/assets/css', to: 'assets/css' },
         { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css', to: 'assets/css/bootstrap.min.css' },
         { from: 'node_modules/aos/dist/aos.css', to: 'assets/css/aos.css' },
-        { from: 'src/assets/vendor/js', to: 'assets/vendor/js' },
         { from: 'favicon.ico', to: 'favicon.ico' },
         { from: 'icon.png', to: 'icon.png' },
         { from: 'site.webmanifest', to: 'site.webmanifest' },
       ],
     }),
-    new GenerateRobotsTxtPlugin(), // Gera automaticamente o robots.txt
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: 'assets/css/[name].[contenthash].css',
     }),
     new PurgeCSSPlugin({
       paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
-      safelist: ['input', 'input[type="text"]', 'btn', 'alert'], // Protegendo classes comuns de remoção acidental
+      safelist: ['input', 'btn', 'alert'],
     }),
     new CompressionPlugin({
       algorithm: 'gzip',
@@ -165,6 +146,7 @@ module.exports = merge(common, {
         return 'script';
       },
     }),
+    new BundleAnalyzerPlugin(),
   ],
   cache: {
     type: 'filesystem',

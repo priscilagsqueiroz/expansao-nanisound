@@ -7,31 +7,46 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    filename: './assets/vendor/js/[name].[contenthash].js',
+    filename: 'assets/vendor/js/[name].[contenthash].js',
   },
   module: {
     rules: [
       // Otimização de imagens
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [{
-          loader: path.resolve(__dirname, 'custom-sharp-loader.js'), // Usa o loader personalizado
-          options: {
-            name: 'assets/images/[name].[hash].[ext]',
+        use: [
+          {
+            loader: path.resolve(__dirname, 'custom-sharp-loader.js'),
+            options: {
+              name: 'assets/images/[name].[hash].[ext]',
+            },
           },
-        }, ],
+        ],
       },
-      // Transpilação de JS com Babel
+      // Transpilação de JavaScript com Babel
       {
-        test: /\.js$/,
+        test: /\.m?js$/, // aceitando .mjs também, que é comum em libs novas
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    browsers: ['defaults', 'safari >= 10'],
+                  },
+                  useBuiltIns: false,
+                },
+              ],
+            ],            
+          },
         },
       },
       // Carregamento de CSS
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
     ],
