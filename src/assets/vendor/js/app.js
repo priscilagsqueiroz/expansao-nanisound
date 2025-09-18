@@ -131,50 +131,6 @@ function configurarContadores() {
     document.querySelectorAll('.contador').forEach(el => observer.observe(el));
 }
 
-// 🔧 Formulários
-function configurarCamposFormulario() {
-    const formatPhone = (e) => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 11) value = value.slice(0, 11);
-
-        let formatted = value.length > 0 ? `(${value.substring(0, 2)}) ` : '';
-        if (value.length >= 3) {
-            const rest = value.substring(2);
-            formatted += rest.length > 8 ? `${rest.substring(0, 5)}-${rest.substring(5, 9)}` :
-                rest.length > 4 ? `${rest.substring(0, 4)}-${rest.substring(4)}` :
-                    rest;
-        }
-
-        e.target.value = formatted;
-    };
-
-    const formatZipCode = (e) => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 8) value = value.slice(0, 8);
-        e.target.value = value.length > 5 ? `${value.substring(0, 5)}-${value.substring(5)}` : value;
-    };
-
-    document.getElementById('whatsapp')?.addEventListener('input', formatPhone);
-    document.getElementById('cep')?.addEventListener('input', formatZipCode);
-}
-
-// Preencher campos da URL
-function preencherCamposUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const fields = [
-        'utm_source', 'utm_medium', 'utm_campaign', 'utm_id',
-        'utm_media', 'utm_term', 'utm_content'
-    ];
-
-    fields.forEach(field => {
-        const value = params.get(field);
-        if (value) {
-            const input = document.getElementById(field);
-            if (input) input.value = value;
-        }
-    });
-}
-
 // Scroll suave para seção Home
 function configurarScrollParaHome() {
     const scrollToHome = () => {
@@ -214,24 +170,64 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+// 🔧 Formulários
+function configurarCamposFormulario() {
+    const formatPhone = (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+
+        let formatted = value.length > 0 ? `(${value.substring(0, 2)}) ` : '';
+        if (value.length >= 3) {
+            const rest = value.substring(2);
+            formatted += rest.length > 8
+                ? `${rest.substring(0, 5)}-${rest.substring(5, 9)}`
+                : rest.length > 4
+                    ? `${rest.substring(0, 4)}-${rest.substring(4)}`
+                    : rest;
+        }
+
+        e.target.value = formatted;
+    };
+
+    const formatZipCode = (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 8) value = value.slice(0, 8);
+        e.target.value = value.length > 5
+            ? `${value.substring(0, 5)}-${value.substring(5)}`
+            : value;
+    };
+
+    document.getElementById('whatsapp')?.addEventListener('input', formatPhone);
+    document.getElementById('cep')?.addEventListener('input', formatZipCode);
+}
+
+// Preencher campos da URL
+function preencherCamposUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const fields = [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_id',
+        'utm_media', 'utm_term', 'utm_content'
+    ];
+
+    fields.forEach(field => {
+        const value = params.get(field);
+        if (value) {
+            const input = document.getElementById(field);
+            if (input) input.value = value;
+        }
+    });
+}
 
 // CEP com cache
 const cepCache = {};
 document.getElementById("cep")?.addEventListener("blur", function () {
-    const pais = document.getElementById("Pais").value;
-    if (pais && pais !== "BR") {
-        document.getElementById("Estado").value = "EX";
-        document.getElementById("ddlCidade").value = "";
-        document.getElementById("Cidade").value = "";
-        const cidadeInteresse = document.getElementById("cidade_interesse_1");
-        if (cidadeInteresse) cidadeInteresse.value = "";
+    const cep = this.value.replace(/\D/g, ""); // ✅ aqui corrige o erro
+    if (cep.length !== 8) return; // só busca se tiver 8 dígitos
+
+    if (cepCache[cep]) {
+        preencherDadosCEP(cepCache[cep]);
         return;
     }
-
-    const cep = this.value.replace(/\D/g, "");
-    if (cep.length !== 8) return;
-
-    if (cepCache[cep]) return preencherDadosCEP(cepCache[cep]);
 
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(res => res.json())
@@ -243,35 +239,62 @@ document.getElementById("cep")?.addEventListener("blur", function () {
 });
 
 function preencherDadosCEP(data) {
+    // Grava exatamente o que veio do ViaCEP
     document.getElementById("Estado").value = data.uf;
-    buscaCidadesPorEstado(data.uf, cidades => {
-        const cidade = cidades.find(c => c.nome.toLowerCase() === data.localidade.toLowerCase());
-        if (cidade) {
-            document.getElementById("ddlCidade").value = cidade.id;
-            document.getElementById("Cidade").value = cidade.nome;
-            const cidadeInteresse = document.getElementById("cidade_interesse_1");
-            if (cidadeInteresse) cidadeInteresse.value = cidade.id;
-        }
-    });
+    document.getElementById("Cidade").value = data.localidade;
 }
 
-function buscaCidadesPorEstado(uf, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://sistema.solutto.com.br/wsUtilitarios.asmx/Retorna_Municipios_Por_Estado_V1", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const xml = xhr.responseXML;
-            const texto = xml.getElementsByTagName("string")[0].textContent;
-            const lista = texto.split(",").map(item => {
-                const [id, nome] = item.split("|");
-                return { id, nome };
-            });
-            callback(lista);
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('formFranquia');
+
+    // Cria um container para mensagens (uma vez só)
+    const msgBox = document.createElement("div");
+    msgBox.id = "msgBox";
+    document.body.appendChild(msgBox);
+
+    // Função para exibir mensagens
+    function showMessage(text, type = "success") {
+        msgBox.textContent = text;
+        msgBox.className = type; // aplica classe CSS (success ou error)
+        msgBox.style.display = "block";
+
+        // Some sozinho após 4s (se for erro)
+        if (type === "error") {
+            setTimeout(() => msgBox.style.display = "none", 4000);
         }
-    };
-    xhr.send("siglaUF=" + encodeURIComponent(uf));
-}
+    }
+
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('assets/php/handler.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showMessage("✅ Seu formulário foi enviado com sucesso!", "success");
+                    setTimeout(() => {
+                        window.location.href = "https://www.melhorfranquiaautomotiva.com.br/final/";
+                    }, 1500);
+                } else {
+                    showMessage("⚠️ Erro no envio: " + result.message, "error");
+                }
+            })
+            .catch(error => {
+                console.error("Erro na comunicação:", error);
+                showMessage("❌ Ocorreu um erro de rede. Tente novamente.", "error");
+            });
+        });
+    }
+});
+
 
 // Inicializar tudo quando DOM estiver pronto
 document.addEventListener("DOMContentLoaded", init);

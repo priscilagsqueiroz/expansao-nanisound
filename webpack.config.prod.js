@@ -81,7 +81,7 @@ module.exports = merge(common, {
         exclude: /node_modules/,
         terserOptions: {
           compress: {
-            drop_console: true,
+            drop_console: false,
           },
         },
       }),
@@ -120,6 +120,7 @@ module.exports = merge(common, {
         { from: 'src/assets/img', to: 'assets/img' },
         { from: 'src/assets/video', to: 'assets/video' },
         { from: 'src/assets/css', to: 'assets/css' },
+        { from: 'src/assets/php', to: 'assets/php' },
         { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css', to: 'assets/css/bootstrap.min.css' },
         { from: 'node_modules/aos/dist/aos.css', to: 'assets/css/aos.css' },
         { from: 'favicon.ico', to: 'favicon.ico' },

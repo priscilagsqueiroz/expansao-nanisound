@@ -1,0 +1,17 @@
+{
+    "name": "cilad/php",
+    "autoload": {
+        "psr-4": {
+            "Cilad\\Php\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Priscila Queiroz",
+            "email": "priscila@rtpublicity.com.br"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.10"
+    }
+}

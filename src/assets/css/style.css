@@ -596,3 +596,26 @@ form p {
 .btn.pulse .fab {
   margin-left: 8px;
 }
+
+#msgBox {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#msgBox.success {
+    background: #28a745; /* verde */
+}
+
+#msgBox.error {
+    background: #dc3545; /* vermelho */
+}
